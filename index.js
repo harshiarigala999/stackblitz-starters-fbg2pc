@@ -10,13 +10,18 @@ let cart = [
     { productId: 1, name: 'Laptop', price: 50000, quantity: 1 },
     { productId: 2, name: 'Mobile', price: 20000, quantity: 2 }
 ];
-app.get('/cart/add', (req, res) => {
-    const productId = parseInt(req.query.productId);
-    const name = req.query.name;
-    const price = parseFloat(req.query.price);
-    const quantity = parseInt(req.query.quantity);
-    cart.push({ productId, name, price, quantity });
-    res.json({ cartItems: cart });
+app.post('/cart/add', (req, res) => {
+  const { productId, name, price, quantity } = req.body;
+
+  const existingItem = cart.find(item => item.productId === productId);
+
+  if (existingItem) {
+      existingItem.quantity += quantity;
+  } else {
+      cart.push({ productId, name, price, quantity });
+  }
+
+  res.json({ cartItems: cart });
 });
 
 

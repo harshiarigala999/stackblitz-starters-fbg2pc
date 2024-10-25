@@ -97,7 +97,11 @@ app.get('/cart', (req, res) => {
 });
 
 function calculateTotalQuantity() {
-  return cart.reduce((total, item) => total + item.quantity, 0); // Sum the quantities
+  let totalQuantity = 0;
+  for (let item of cart) {
+      totalQuantity += item.quantity; // Sum up the quantity of each item
+  }
+  return totalQuantity;
 }
 
 // Endpoint to calculate and return the total quantity of items in the cart
@@ -105,6 +109,7 @@ app.get('/cart/total-quantity', (req, res) => {
   const totalQuantity = calculateTotalQuantity(); // Get total quantity
   res.json({ totalQuantity }); // Send the response
 });
+
 
 function calculateTotalPrice() {
   return cart.reduce((total, item) => total + item.price * item.quantity, 0); // Sum the total price
